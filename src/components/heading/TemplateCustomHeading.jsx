@@ -116,3 +116,10 @@ function TemplateCustomHeading({ heading }) {
 }
 
 export default TemplateCustomHeading;
+
+// API
+// "https://qr4order001.s3.amazonaws.com/0f3e5539-5f3e-4549-b71c-4a41fbd65991/26135e6e/template_list.json?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAYJJVOXVVQ26GYWHO%2F20240508%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240508T092111Z&X-Amz-Expires=25000&X-Amz-SignedHeaders=host&X-Amz-Signature=d83737dc2c1dbe083dce92230f36a271747c05b3d5ae31b8f2b57f3fb63ed919"
+
+// http://3.110.77.134:8000/api/outlets/template_urls/4fb99ffc-a6dd-45c5-8812-1795b2fd90c7/859123dd/index
+
+// "https://qr4order001.s3.amazonaws.com/859123dd/4fb99ffc-a6dd-45c5-8812-1795b2fd90c7/templates/index.css?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAYJJVOXVVQ26GYWHO%2F20240508%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240508T111004Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=68a19c45f74ab81ded3173b6c87a275fad3d1320888f04d3a7beb2863489b60c",
