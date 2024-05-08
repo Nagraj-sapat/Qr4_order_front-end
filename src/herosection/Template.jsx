@@ -14,8 +14,6 @@ function Template() {
   // const outletId = useSelector((state) => state.activeItemData.restaurantId);
   // console.log("userDetails", userDetails);
   // console.log("outletId", outletId);
-  const qrList = useSelector((state) => state.qrThemeData?.qrList);
-  console.log(qrList);
 
   useEffect(() => {
     breadcrumb("payment");

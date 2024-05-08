@@ -3,11 +3,18 @@ import { themeColor } from "../../utilis/constants";
 import Dropdown from "react-bootstrap/Dropdown";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import { useAmazonUrl } from "../../utilis/useAmazonUrl";
 
 function TemplateCustomHeading({ heading }) {
   const values = ["xxl-down"];
   const [fullscreen, setFullscreen] = useState(true);
   const [show, setShow] = useState(false);
+
+  const getAmazonUrl = useAmazonUrl();
+
+  let TemplateUrl = getAmazonUrl("template_list");
+
+  console.log(TemplateUrl.url.get_url);
 
   function handleShow(breakpoint) {
     setFullscreen(breakpoint);
@@ -47,10 +54,10 @@ function TemplateCustomHeading({ heading }) {
 
             <Dropdown.Menu>
               <Dropdown.Item href="#/action-1">Home.Html</Dropdown.Item>
-              {/* <Dropdown.Item href="#/action-2">Home.CSS</Dropdown.Item> */}
+              <Dropdown.Item href="#/action-2">Home.CSS</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
-          {/* Dropdowm start */}
+          {/* Dropdowm end */}
         </div>
       </div>
       <div
