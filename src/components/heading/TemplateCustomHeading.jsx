@@ -12,8 +12,8 @@ function TemplateCustomHeading({ heading }) {
   const [fullscreen, setFullscreen] = useState(true);
   const [show, setShow] = useState(false);
   const [dropdownData, setDropdownData] = useState([]);
-  const [htmlContent, setHtmlContent] = useState("HTML");
-  const [cssContent, setCssContent] = useState("CSS");
+  let [htmlContent, setHtmlContent] = useState("HTML Content");
+  let [cssContent, setCssContent] = useState("CSS Content");
 
   const getAmazonUrl = useAmazonUrl();
   let TemplateUrl = getAmazonUrl("template_list");
@@ -51,7 +51,9 @@ function TemplateCustomHeading({ heading }) {
       setCssContent(cssResponse.data);
       setHtmlContent(htmlResponse.data);
     } catch (error) {
-      console.error("Error fetching content:", error);
+      console.error("Error fetching content:", error.message);
+      setHtmlContent((htmlContent = error.message));
+      setCssContent((htmlContent = error.message));
     }
   };
 
@@ -59,8 +61,6 @@ function TemplateCustomHeading({ heading }) {
     setFullscreen(breakpoint);
     setShow(true);
   };
-
-  console.log(dropdownData[0]);
 
   return (
     <section className="editor_main_container">
@@ -104,13 +104,27 @@ function TemplateCustomHeading({ heading }) {
       <div className="Editor_container mt-3">
         <div className="overflow-auto scrollbar html_css_content_container">
           {/* Display HTML content */}
-          <pre className={htmlContent === "HTML" && "Content_center"}>
+          <pre
+            className={
+              htmlContent === "HTML Content" ||
+              htmlContent === "Request failed with status code 403"
+                ? "Content_center"
+                : ""
+            }
+          >
             {htmlContent}
           </pre>
         </div>
         <div className="overflow-auto scrollbar html_css_content_container">
           {/* Display CSS content */}
-          <pre className={htmlContent === "HTML" && "Content_center"}>
+          <pre
+            className={
+              htmlContent === "HTML Content" ||
+              htmlContent === "Request failed with status code 403"
+                ? "Content_center"
+                : ""
+            }
+          >
             {cssContent}
           </pre>
         </div>
