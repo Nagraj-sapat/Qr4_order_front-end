@@ -1,0 +1,30 @@
+.scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.html_css_content_container {
+  height: 70vh;
+  background: rgb(48 51 64);
+  border: 3px solid #b78e8e;
+  color: white;
+}
+.Editor_container {
+  display: grid;
+  grid-template-columns: 49% 49%;
+  column-gap: 10px;
+  justify-content: center;
+}
+.editor_main_container {
+  height: 90vh;
+  background: currentColor;
+}
+.Content_center {
+  font-family: sans-serif;
+  font-size: 2rem;
+  color: #a9a9a95c;
+  margin-top: 10rem;
+  text-align: center;
+}

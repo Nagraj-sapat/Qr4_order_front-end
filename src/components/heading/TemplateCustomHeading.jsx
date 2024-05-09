@@ -1,31 +1,69 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { themeColor } from "../../utilis/constants";
 import Dropdown from "react-bootstrap/Dropdown";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import axios from "axios";
 import { useAmazonUrl } from "../../utilis/useAmazonUrl";
+import "../../../src/TempateCustomHeading.css";
 
 function TemplateCustomHeading({ heading }) {
   const values = ["xxl-down"];
   const [fullscreen, setFullscreen] = useState(true);
   const [show, setShow] = useState(false);
+  const [dropdownData, setDropdownData] = useState([]);
+  const [htmlContent, setHtmlContent] = useState("HTML");
+  const [cssContent, setCssContent] = useState("CSS");
 
   const getAmazonUrl = useAmazonUrl();
-
   let TemplateUrl = getAmazonUrl("template_list");
 
-  console.log(TemplateUrl.url.get_url);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(TemplateUrl.url.get_url);
+        setDropdownData(response.data);
+      } catch (error) {
+        console.error("Error fetching dropdown data:", error);
+      }
+    };
 
-  function handleShow(breakpoint) {
+    fetchData();
+  }, []);
+
+  const handleApiCall = async (breakpoint) => {
+    try {
+      // Call the first API to get the selected template URL
+      const selectedTemplateResponse = await axios.get(
+        `http://3.110.77.134:8000/api/outlets/template_urls/0f3e5539-5f3e-4549-b71c-4a41fbd65991/af67fcb7/${breakpoint}`
+      );
+
+      // Call the second API to get the CSS content
+      const cssResponse = await axios.get(
+        "https://qr4order001.s3.amazonaws.com/0f3e5539-5f3e-4549-b71c-4a41fbd65991/af67fcb7/templates/index.css?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAYJJVOXVVQ26GYWHO%2F20240509%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240509T063046Z&X-Amz-Expires=18000&X-Amz-SignedHeaders=host&X-Amz-Signature=e09a3e4283dbd4789ebdea25d640fcef840bf5dc138438c2b3e5cc93f1a6d7fa"
+      );
+
+      // Call the third API to get the HTML content
+      const htmlResponse = await axios.get(
+        "https://qr4order001.s3.amazonaws.com/0f3e5539-5f3e-4549-b71c-4a41fbd65991/af67fcb7/templates/index.html?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAYJJVOXVVQ26GYWHO%2F20240509%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240509T063046Z&X-Amz-Expires=18000&X-Amz-SignedHeaders=host&X-Amz-Signature=c860564cbbc414bf950529a6fce760e7648d0e620b62a04a758bf18f603907d5"
+      );
+
+      setCssContent(cssResponse.data);
+      setHtmlContent(htmlResponse.data);
+    } catch (error) {
+      console.error("Error fetching content:", error);
+    }
+  };
+
+  const handleShowModal = (breakpoint) => {
     setFullscreen(breakpoint);
     setShow(true);
-  }
+  };
+
+  console.log(dropdownData[0]);
 
   return (
-    <section
-      className="editor_main_container"
-      style={{ height: "90vh", background: "currentColor" }}
-    >
+    <section className="editor_main_container">
       <div
         style={{
           display: "grid",
@@ -46,48 +84,35 @@ function TemplateCustomHeading({ heading }) {
           </h5>
         </div>
         <div className="d-flex align-items-center">
-          {/* Dropdowm start */}
+          {/* Dropdown start */}
           <Dropdown>
             <Dropdown.Toggle variant="success" id="dropdown-basic">
               Select HTML
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-              <Dropdown.Item href="#/action-1">Home.Html</Dropdown.Item>
-              <Dropdown.Item href="#/action-2">Home.CSS</Dropdown.Item>
+              {dropdownData.map((item, index) => (
+                <Dropdown.Item key={index} onClick={() => handleApiCall(item)}>
+                  {item}
+                </Dropdown.Item>
+              ))}
             </Dropdown.Menu>
           </Dropdown>
-          {/* Dropdowm end */}
+          {/* Dropdown end */}
         </div>
       </div>
-      <div
-        className="Editor_container mt-3"
-        style={{
-          display: "grid",
-          gridTemplateColumns: "49% 49%",
-          columnGap: "10px",
-          justifyContent: "center",
-        }}
-      >
-        <div
-          style={{
-            height: "70vh",
-            background: "rgb(48 51 64)",
-            border: "3px solid #b78e8e",
-            color: "white",
-          }}
-        >
-          Html
+      <div className="Editor_container mt-3">
+        <div className="overflow-auto scrollbar html_css_content_container">
+          {/* Display HTML content */}
+          <pre className={htmlContent === "HTML" && "Content_center"}>
+            {htmlContent}
+          </pre>
         </div>
-        <div
-          style={{
-            height: "70vh",
-            background: "rgb(48 51 64)",
-            border: "3px solid #b78e8e",
-            color: "white",
-          }}
-        >
-          css
+        <div className="overflow-auto scrollbar html_css_content_container">
+          {/* Display CSS content */}
+          <pre className={htmlContent === "HTML" && "Content_center"}>
+            {cssContent}
+          </pre>
         </div>
       </div>
       <div
@@ -95,7 +120,7 @@ function TemplateCustomHeading({ heading }) {
         style={{ justifyContent: "center", display: "flex" }}
       >
         {values.map((v, idx) => (
-          <Button key={idx} className="me-3" onClick={() => handleShow(v)}>
+          <Button key={idx} className="me-3" onClick={() => handleShowModal(v)}>
             Preview
           </Button>
         ))}
@@ -116,10 +141,3 @@ function TemplateCustomHeading({ heading }) {
 }
 
 export default TemplateCustomHeading;
-
-// API
-// "https://qr4order001.s3.amazonaws.com/0f3e5539-5f3e-4549-b71c-4a41fbd65991/26135e6e/template_list.json?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAYJJVOXVVQ26GYWHO%2F20240508%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240508T092111Z&X-Amz-Expires=25000&X-Amz-SignedHeaders=host&X-Amz-Signature=d83737dc2c1dbe083dce92230f36a271747c05b3d5ae31b8f2b57f3fb63ed919"
-
-// http://3.110.77.134:8000/api/outlets/template_urls/4fb99ffc-a6dd-45c5-8812-1795b2fd90c7/859123dd/index
-
-// "https://qr4order001.s3.amazonaws.com/859123dd/4fb99ffc-a6dd-45c5-8812-1795b2fd90c7/templates/index.css?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAYJJVOXVVQ26GYWHO%2F20240508%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240508T111004Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=68a19c45f74ab81ded3173b6c87a275fad3d1320888f04d3a7beb2863489b60c",
