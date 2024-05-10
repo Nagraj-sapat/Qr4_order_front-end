@@ -16,7 +16,7 @@ function RestaurantFeaturesCard({ data }) {
           !data?.isDisabled &&
           navigate(`/main/outlet/${restaurantId}${data?.navigate}`)
         }
-        className={`text-center p-2 rounded ${
+        className={`text-center p-2 rounded text-success ${
           !data?.isDisabled && "cursor-pointer featuresCard"
         }`}
       >
@@ -25,7 +25,7 @@ function RestaurantFeaturesCard({ data }) {
         ></div>
         <div
           className={`${
-            data?.isDisabled ? "secondary-text" : "primary-text"
+            data?.isDisabled ? "secondary-text" : "text-success"
           } fw-medium featureText`}
         >
           {data?.name}

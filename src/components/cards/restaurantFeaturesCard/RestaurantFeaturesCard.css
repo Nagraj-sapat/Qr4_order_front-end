@@ -1,12 +1,12 @@
-.featuresCard{
-    animation: transform .2s ease-in-out;
+.featuresCard {
+  animation: transform 0.2s ease-in-out;
 }
 
-.featuresCard:hover{
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-    transform: scale(1.1)
+.featuresCard:hover {
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+  transform: scale(1.1);
 }
 
-.featureText{
-    font-size: 14px;
+.featureText {
+  font-size: 14px;
 }
