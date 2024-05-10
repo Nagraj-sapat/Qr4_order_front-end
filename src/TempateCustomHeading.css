@@ -28,3 +28,15 @@
   margin-top: 10rem;
   text-align: center;
 }
+.dropdown-menu {
+  --bs-dropdown-min-width: 8rem !important;
+  transform: translate(3px, 40px) !important;
+  --bs-dropdown-bg: #146c43 !important;
+}
+
+.dropdown-item {
+  color: antiquewhite !important;
+}
+.dropdown-item:hover {
+  background-color: #537e50 !important;
+}
