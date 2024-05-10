@@ -6,14 +6,20 @@ import Modal from "react-bootstrap/Modal";
 import axios from "axios";
 import { useAmazonUrl } from "../../utilis/useAmazonUrl";
 import "../../../src/TempateCustomHeading.css";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function TemplateCustomHeading({ heading }) {
+  const userDetails = useSelector((state) => state.userData.data);
+
+  const params = useParams();
   const values = ["xxl-down"];
   const [fullscreen, setFullscreen] = useState(true);
   const [show, setShow] = useState(false);
   const [dropdownData, setDropdownData] = useState([]);
   let [htmlContent, setHtmlContent] = useState("HTML");
   let [cssContent, setCssContent] = useState("CSS");
+  let [JSContent, setJSContent] = useState("");
 
   const getAmazonUrl = useAmazonUrl();
   let TemplateUrl = getAmazonUrl("template_list");
@@ -35,7 +41,7 @@ function TemplateCustomHeading({ heading }) {
     try {
       // Call the first API to get the selected template URL
       const selectedTemplateResponse = await axios.get(
-        `http://3.110.77.134:8000/api/outlets/template_urls/0f3e5539-5f3e-4549-b71c-4a41fbd65991/af67fcb7/${breakpoint}`
+        `http://3.110.77.134:8000/api/outlets/template_urls/${userDetails?.owner_id}/${params?.outletId}/${breakpoint}`
       );
 
       // Call the second API to get the CSS content
@@ -47,9 +53,14 @@ function TemplateCustomHeading({ heading }) {
       const htmlResponse = await axios.get(
         "https://qr4order001.s3.amazonaws.com/0f3e5539-5f3e-4549-b71c-4a41fbd65991/af67fcb7/templates/index.html?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAYJJVOXVVQ26GYWHO%2F20240510%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240510T053823Z&X-Amz-Expires=43200&X-Amz-SignedHeaders=host&X-Amz-Signature=a30830ebd4bd8359d57ce9e200a178ccc009c6dca580e85d97100380358a6288"
       );
+      // Call the forth API to get the JS content
+      const JSResponse = await axios.get(
+        "https://qr4order001.s3.amazonaws.com/0f3e5539-5f3e-4549-b71c-4a41fbd65991/af67fcb7/templates/index.js?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAYJJVOXVVQ26GYWHO%2F20240510%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240510T055436Z&X-Amz-Expires=43200&X-Amz-SignedHeaders=host&X-Amz-Signature=d4dba292f0c3b916d1fb75d438d2fc288d6d0173c854d0a8925711155f983c6a"
+      );
 
       setCssContent(cssResponse.data);
       setHtmlContent(htmlResponse.data);
+      setJSContent(JSResponse.data);
     } catch (error) {
       console.error("Error fetching content:", error.message);
       setHtmlContent((htmlContent = error.message));
@@ -60,6 +71,14 @@ function TemplateCustomHeading({ heading }) {
   const handleShowModal = (breakpoint) => {
     setFullscreen(breakpoint);
     setShow(true);
+  };
+
+  const handleHtmlChange = (event) => {
+    setHtmlContent(event.target.innerText);
+  };
+
+  const handleCssChange = (event) => {
+    setCssContent(event.target.innerText);
   };
 
   return (
@@ -101,7 +120,9 @@ function TemplateCustomHeading({ heading }) {
           {/* Dropdown end */}
         </div>
       </div>
-      <div className="Editor_container mt-3">
+
+      <section className="Editor_container mt-3">
+        {/* Other JSX code */}
         <div className="overflow-auto scrollbar html_css_content_container">
           {/* Display HTML content */}
           <pre
@@ -112,6 +133,7 @@ function TemplateCustomHeading({ heading }) {
                 : ""
             }p-2`}
             contentEditable
+            onInput={handleHtmlChange}
           >
             {htmlContent}
           </pre>
@@ -126,11 +148,14 @@ function TemplateCustomHeading({ heading }) {
                 : ""
             }p-2`}
             contentEditable
+            onInput={handleCssChange}
           >
             {cssContent}
           </pre>
         </div>
-      </div>
+        {/* Other JSX code */}
+      </section>
+
       <div
         className="btn_preview_save_container mt-3"
         style={{ justifyContent: "center", display: "flex" }}
@@ -146,9 +171,29 @@ function TemplateCustomHeading({ heading }) {
           onHide={() => setShow(false)}
         >
           <Modal.Header closeButton>
-            <Modal.Title>Modal</Modal.Title>
+            <Modal.Title>Preview</Modal.Title>
           </Modal.Header>
-          <Modal.Body>Modal body content</Modal.Body>
+          <Modal.Body>
+            <iframe
+              title="Preview"
+              style={{ width: "100%", height: "80vh", border: "none" }}
+              srcDoc={`
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Preview of the code</title>
+          <style>${cssContent}</style>
+        </head>
+        <body>
+          ${htmlContent}
+          <script>${JSContent}</script>
+        </body>
+        </html>
+      `}
+            />
+          </Modal.Body>
         </Modal>
         <Button variant="success">Save</Button>
       </div>
