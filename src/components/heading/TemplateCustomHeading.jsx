@@ -12,8 +12,8 @@ function TemplateCustomHeading({ heading }) {
   const [fullscreen, setFullscreen] = useState(true);
   const [show, setShow] = useState(false);
   const [dropdownData, setDropdownData] = useState([]);
-  let [htmlContent, setHtmlContent] = useState("HTML Content");
-  let [cssContent, setCssContent] = useState("CSS Content");
+  let [htmlContent, setHtmlContent] = useState("HTML");
+  let [cssContent, setCssContent] = useState("CSS");
 
   const getAmazonUrl = useAmazonUrl();
   let TemplateUrl = getAmazonUrl("template_list");
@@ -52,6 +52,8 @@ function TemplateCustomHeading({ heading }) {
       setHtmlContent(htmlResponse.data);
     } catch (error) {
       console.error("Error fetching content:", error.message);
+      setHtmlContent((htmlContent = error.message));
+      setCssContent((htmlContent = error.message));
     }
   };
 
@@ -104,7 +106,7 @@ function TemplateCustomHeading({ heading }) {
           {/* Display HTML content */}
           <pre
             className={
-              htmlContent === "HTML Content" ||
+              htmlContent === "HTML" ||
               htmlContent === "Request failed with status code 403"
                 ? "Content_center"
                 : ""
@@ -117,7 +119,7 @@ function TemplateCustomHeading({ heading }) {
           {/* Display CSS content */}
           <pre
             className={
-              htmlContent === "HTML Content" ||
+              htmlContent === "HTML" ||
               htmlContent === "Request failed with status code 403"
                 ? "Content_center"
                 : ""
