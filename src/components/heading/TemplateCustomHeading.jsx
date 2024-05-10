@@ -105,12 +105,12 @@ function TemplateCustomHeading({ heading }) {
         <div className="overflow-auto scrollbar html_css_content_container">
           {/* Display HTML content */}
           <pre
-            className={
+            className={`${
               htmlContent === "HTML" ||
               htmlContent === "Request failed with status code 403"
-                ? "Content_center"
+                ? "Content_center "
                 : ""
-            }
+            }p-2`}
           >
             {htmlContent}
           </pre>
@@ -118,12 +118,12 @@ function TemplateCustomHeading({ heading }) {
         <div className="overflow-auto scrollbar html_css_content_container">
           {/* Display CSS content */}
           <pre
-            className={
+            className={`${
               htmlContent === "HTML" ||
               htmlContent === "Request failed with status code 403"
-                ? "Content_center"
+                ? "Content_center "
                 : ""
-            }
+            }p-2`}
           >
             {cssContent}
           </pre>
