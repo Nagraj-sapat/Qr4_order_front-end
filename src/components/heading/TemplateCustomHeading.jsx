@@ -40,20 +40,18 @@ function TemplateCustomHeading({ heading }) {
 
       // Call the second API to get the CSS content
       const cssResponse = await axios.get(
-        "https://qr4order001.s3.amazonaws.com/0f3e5539-5f3e-4549-b71c-4a41fbd65991/af67fcb7/templates/index.css?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAYJJVOXVVQ26GYWHO%2F20240509%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240509T063046Z&X-Amz-Expires=18000&X-Amz-SignedHeaders=host&X-Amz-Signature=e09a3e4283dbd4789ebdea25d640fcef840bf5dc138438c2b3e5cc93f1a6d7fa"
+        "https://qr4order001.s3.amazonaws.com/0f3e5539-5f3e-4549-b71c-4a41fbd65991/af67fcb7/templates/index.css?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAYJJVOXVVQ26GYWHO%2F20240510%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240510T053823Z&X-Amz-Expires=43200&X-Amz-SignedHeaders=host&X-Amz-Signature=8ec1c1278c2829f1a5b3533c6ef19d15d07874fb6c04c07b1b56ff5f14255c5f"
       );
 
       // Call the third API to get the HTML content
       const htmlResponse = await axios.get(
-        "https://qr4order001.s3.amazonaws.com/0f3e5539-5f3e-4549-b71c-4a41fbd65991/af67fcb7/templates/index.html?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAYJJVOXVVQ26GYWHO%2F20240509%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240509T063046Z&X-Amz-Expires=18000&X-Amz-SignedHeaders=host&X-Amz-Signature=c860564cbbc414bf950529a6fce760e7648d0e620b62a04a758bf18f603907d5"
+        "https://qr4order001.s3.amazonaws.com/0f3e5539-5f3e-4549-b71c-4a41fbd65991/af67fcb7/templates/index.html?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAYJJVOXVVQ26GYWHO%2F20240510%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240510T053823Z&X-Amz-Expires=43200&X-Amz-SignedHeaders=host&X-Amz-Signature=a30830ebd4bd8359d57ce9e200a178ccc009c6dca580e85d97100380358a6288"
       );
 
       setCssContent(cssResponse.data);
       setHtmlContent(htmlResponse.data);
     } catch (error) {
       console.error("Error fetching content:", error.message);
-      setHtmlContent((htmlContent = error.message));
-      setCssContent((htmlContent = error.message));
     }
   };
 
