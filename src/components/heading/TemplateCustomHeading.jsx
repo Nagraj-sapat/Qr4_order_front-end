@@ -111,6 +111,7 @@ function TemplateCustomHeading({ heading }) {
                 ? "Content_center "
                 : ""
             }p-2`}
+            contentEditable
           >
             {htmlContent}
           </pre>
@@ -124,6 +125,7 @@ function TemplateCustomHeading({ heading }) {
                 ? "Content_center "
                 : ""
             }p-2`}
+            contentEditable
           >
             {cssContent}
           </pre>
